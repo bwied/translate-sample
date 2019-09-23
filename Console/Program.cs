@@ -110,7 +110,7 @@ namespace translate_sample
             Console.WriteLine("Enter 'from' language (blank for auto-detect):");
             var from = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _proxy.TranslateTextRequest(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result;
+            var deserializedOutput = _service.TranslateText(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
@@ -197,13 +197,13 @@ namespace translate_sample
             {
                 var a = HttpMethodRegistry.Instance;
 
-                var method = a[HttpMethod.Get.Method];
+                var method = a[HttpMethod.Get.Method]();
                 Console.WriteLine($"var method = a[HttpMethod.Get.Method]: {method.Method}");
-                var method2 = b[HttpMethod.Delete.Method];
+                var method2 = b[HttpMethod.Delete.Method]();
                 Console.WriteLine($"var method2 = b[HttpMethod.Delete.Method]: {method2.Method}");
-                var method3 = a[HttpMethod.Post.Method];
+                var method3 = a[HttpMethod.Post.Method]();
                 Console.WriteLine($"var method3 = a[HttpMethod.Post.Method]: {method3.Method}");
-                var method4 = a["Unknown"];
+                var method4 = a["Unknown"]();
                 Console.WriteLine($"var method4 = a[\"Unknown\"]: {method4.Method}");
             }
             catch (Exception e)

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace TranslationServices
 {
-    public abstract class Registry<TKey, TEntry> : Dictionary<TKey, TEntry>, IRegistry<TKey, TEntry>
+    public abstract class Registry<TKey, TEntry> : Dictionary<TKey, Func<TEntry>>, IRegistry<TKey, TEntry>
     {
-        private TEntry _defaultEntry;
+        private Func<TEntry> _defaultEntry;
 
-        internal Registry(IDictionary<TKey, TEntry> entries, TEntry defaultEntry) : base(entries)
+        internal Registry(IDictionary<TKey, Func<TEntry>> entries, Func<TEntry> defaultEntry) : base(entries)
         {
             _defaultEntry = defaultEntry;
         }
 
-        private TEntry DefaultEntry
+        private Func<TEntry> DefaultEntry
         {
             get
             {
@@ -24,19 +24,15 @@ namespace TranslationServices
             }
         }
 
-        public new virtual TEntry this[TKey key] => this.ContainsKey(key) ? base[key] : DefaultEntry;
+        public new virtual Func<TEntry> this[TKey key] => this.ContainsKey(key) ? base[key] : DefaultEntry;
 
         public bool HasDefaultEntry => _defaultEntry != null;
 
         public abstract bool HasStaticConfiguration { get; }
 
-        public abstract bool IsStaticConfiguration { get; }
-
-        public abstract bool HasDynamicConfiguration { get; }
-
         protected abstract void LoadStaticConfiguration();
 
-        public virtual void Load(IDictionary<TKey, TEntry> entries = null)
+        public virtual void Load(IDictionary<TKey, Func<TEntry>> entries = null)
         {
             if (entries == null && HasStaticConfiguration)
             {
@@ -52,7 +48,7 @@ namespace TranslationServices
             }
         }
 
-        public virtual void SetDefaultEntry(TEntry defaultEntry)
+        public virtual void SetDefaultEntry(Func<TEntry> defaultEntry)
         {
             if (defaultEntry != null && !this.ContainsValue(defaultEntry))
             {

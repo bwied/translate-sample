@@ -3,27 +3,24 @@ using System.Collections.Generic;
 
 namespace TranslationServices
 {
-    public class TranslationServicesRegistry : Registry<string, HttpApiConfigurationClient>
+    public class TranslationServicesRegistry : Registry<string, HttpApiConfigurationDto>
     {
         private static TranslationServicesRegistry _instance;
 
-        private static readonly Dictionary<string, HttpApiConfigurationClient> Entries = new Dictionary<string, HttpApiConfigurationClient>()
+        private static readonly Dictionary<string, Func<HttpApiConfigurationDto>> Entries = new Dictionary<string, Func<HttpApiConfigurationDto>>()
         {
-            {TranslationServicesStaticConfigurations.Languages.Key.Method, TranslationServicesStaticConfigurations.Languages},
-            {TranslationServicesStaticConfigurations.Translations.Key.Method, TranslationServicesStaticConfigurations.Translations},
-            {TranslationServicesStaticConfigurations.Transliterations.Key.Method, TranslationServicesStaticConfigurations.Transliterations},
-            {TranslationServicesStaticConfigurations.TranslationDictionary.Key.Method, TranslationServicesStaticConfigurations.TranslationDictionary}
+            {TranslationServiceAction.TranslateText.Method, () => TranslationServicesStaticConfigurations.Translate},
+            {TranslationServiceAction.Languages.Method, () => TranslationServicesStaticConfigurations.Languages},
+            {TranslationServiceAction.Translations.Method, () => TranslationServicesStaticConfigurations.Translations},
+            {TranslationServiceAction.Transliterations.Method, () => TranslationServicesStaticConfigurations.Transliterations},
+            {TranslationServiceAction.TranslationDictionary.Method, () => TranslationServicesStaticConfigurations.TranslationDictionary}
         };
 
         public static TranslationServicesRegistry Instance => _instance ?? (_instance = new TranslationServicesRegistry(Entries));
 
-        public override bool HasStaticConfiguration => throw new NotImplementedException();
+        public override bool HasStaticConfiguration => true;
 
-        public override bool IsStaticConfiguration => throw new NotImplementedException();
-
-        public override bool HasDynamicConfiguration => throw new NotImplementedException();
-
-        private TranslationServicesRegistry(IDictionary<string, HttpApiConfigurationClient> entries) : base(entries, null)
+        private TranslationServicesRegistry(IDictionary<string, Func<HttpApiConfigurationDto>> entries) : base(entries, null)
         {
         }
 

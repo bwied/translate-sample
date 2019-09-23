@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace TranslationServices
@@ -35,6 +36,19 @@ namespace TranslationServices
             baseConfig.Route = $"languages?api-version={ApiVersion}";
 
             return baseConfig;
+        }
+
+        public static HttpApiConfigurationClient Translate
+        {
+            get
+            {
+                var config = GetBaseConfig();
+
+                config.Method = HttpMethod.Post.Method;
+                config.Route = $"translate?api-version={ApiVersion}";
+
+                return new HttpApiConfigurationClient(TranslationServiceAction.TranslateText, config);
+            }
         }
 
         public static HttpApiConfigurationClient Languages => new HttpApiConfigurationClient(TranslationServiceAction.Languages, GetBaseLanguagesConfig());
