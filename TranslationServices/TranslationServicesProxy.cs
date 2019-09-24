@@ -6,22 +6,16 @@ namespace TranslationServices
 {
     public class TranslationServicesProxy : HttpRequest
     {
-        private const string key_var = "TRANSLATOR_TEXT_SUBSCRIPTION_KEY";
-        private static readonly string subscriptionKey = Environment.GetEnvironmentVariable(key_var);
-
-        private const string endpoint_var = "TRANSLATOR_TEXT_ENDPOINT";
-        private static readonly string endpoint = Environment.GetEnvironmentVariable(endpoint_var);
-
         public static TranslationServicesProxy GetInstance(HttpClient client, HttpApiConfigurationDto config, string requestBody = null)
         {
-            if (null == subscriptionKey)
+            if (null == TranslationServicesStaticConfigurations.Token)
             {
-                throw new Exception("Please set/export the environment variable: " + key_var);
+                throw new Exception("Please set/export the environment variable: " + TranslationServicesStaticConfigurations.KeyVar);
             }
 
-            if (null == endpoint)
+            if (null == TranslationServicesStaticConfigurations.Host)
             {
-                throw new Exception("Please set/export the environment variable: " + endpoint_var);
+                throw new Exception("Please set/export the environment variable: " + TranslationServicesStaticConfigurations.EndpointVar);
             }
 
             return new TranslationServicesProxy(client, config, requestBody);
@@ -34,7 +28,7 @@ namespace TranslationServices
             {
                 this.Headers.Add(keyValuePair.Key, keyValuePair.Value);
             }
-            this.RequestUri = new Uri(endpoint + config.Route);
+            this.RequestUri = new Uri(TranslationServicesStaticConfigurations.Host + config.Route);
 
             if (!string.IsNullOrEmpty(requestBody))
             {

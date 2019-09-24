@@ -7,13 +7,23 @@ namespace TranslationServices
 {
     public static class TranslationServicesStaticConfigurations
     {
-        private const string KeyVar = "TRANSLATOR_TEXT_SUBSCRIPTION_KEY";
-        private const string EndpointVar = "TRANSLATOR_TEXT_ENDPOINT";
+        private const string TokenKey = "Ocp-Apim-Subscription-Key";
+        private const string ApiVersionKey = "api-version";
+        private const string LanguageRoute = "languages";
+        private const string TranslateRoute = "translate";
+        private const string TextTypeKey = "textType";
+        private const string ScopeKey = "scope";
+        private const string TranslationScope = "translation";
+        private const string TransliterationScope = "transliteration";
+        private const string DictionaryScope = "dictionary";
 
         private static string Scheme => Uri.UriSchemeHttps;
-        private static string Host => Environment.GetEnvironmentVariable(EndpointVar);
         private static string ApiVersion => "3.0";
-        private static string Token { get; } = Environment.GetEnvironmentVariable(KeyVar);
+
+        internal const string KeyVar = "TRANSLATOR_TEXT_SUBSCRIPTION_KEY";
+        internal const string EndpointVar = "TRANSLATOR_TEXT_ENDPOINT";
+        internal static string Token { get; } = Environment.GetEnvironmentVariable(KeyVar);
+        internal static string Host => Environment.GetEnvironmentVariable(EndpointVar);
 
         private static HttpApiConfigurationDto GetBaseConfig()
         {
@@ -24,7 +34,7 @@ namespace TranslationServices
                     Token = Token,
                     Scheme = Scheme,
                     ApiVersion = ApiVersion,
-                    Headers = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("Ocp-Apim-Subscription-Key", Token) }
+                    Headers = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>(TokenKey, Token) }
                 };
         }
 
@@ -33,7 +43,7 @@ namespace TranslationServices
             var baseConfig = GetBaseConfig();
 
             baseConfig.Method = HttpMethod.Get.Method;
-            baseConfig.Route = $"languages?api-version={ApiVersion}";
+            baseConfig.Route = $"{LanguageRoute}?{ApiVersionKey}={ApiVersion}";
 
             return baseConfig;
         }
@@ -43,68 +53,68 @@ namespace TranslationServices
             var config = GetBaseConfig();
 
             config.Method = HttpMethod.Post.Method;
-            config.Route = $"translate?api-version={ApiVersion}";
+            config.Route = $"{TranslateRoute}?{ApiVersionKey}={ApiVersion}";
 
             return config;
         }
 
-        public static HttpApiConfigurationClient TranslateText
+        public static HttpApiConfigurationDto TranslateText
         {
             get
             {
                 var config = GetBaseTranslateConfig();
 
-                return new HttpApiConfigurationClient(TranslationServiceAction.TranslateText, config);
+                return config;
             }
         }
 
-        public static HttpApiConfigurationClient TranslateHtml
+        public static HttpApiConfigurationDto TranslateHtml
         {
             get
             {
                 var config = GetBaseTranslateConfig();
 
-                config.Route += "&textType=html";
+                config.Route += $"&{TextTypeKey}=html";
 
-                return  new HttpApiConfigurationClient(TranslationServiceAction.TranslateHtml, config);
+                return config;
             }
         }
 
-        public static HttpApiConfigurationClient Languages => new HttpApiConfigurationClient(TranslationServiceAction.Languages, GetBaseLanguagesConfig());
+        public static HttpApiConfigurationDto Languages => GetBaseLanguagesConfig();
 
-        public static HttpApiConfigurationClient Translations
+        public static HttpApiConfigurationDto Translations
         {
             get
             {
                 var config = GetBaseLanguagesConfig();
 
-                config.Route = $"{config.Route}&scope=translation";
+                config.Route = $"{config.Route}&{ScopeKey}={TranslationScope}";
 
-                return new HttpApiConfigurationClient(TranslationServiceAction.Translations, config);
+                return config;
             }
         }
 
-        public static HttpApiConfigurationClient Transliterations
+        public static HttpApiConfigurationDto Transliterations
         {
             get
             {
                 var config = GetBaseLanguagesConfig();
 
-                config.Route = $"{config.Route}&scope=transliteration";
+                config.Route = $"{config.Route}&{ScopeKey}={TransliterationScope}";
 
-                return new HttpApiConfigurationClient(TranslationServiceAction.Transliterations, config);
+                return config;
             }
         }
 
-        public static HttpApiConfigurationClient TranslationDictionary
+        public static HttpApiConfigurationDto TranslationDictionary
         {
             get
             {
                 var config = GetBaseLanguagesConfig();
 
-                config.Route = $"{config.Route}&scope=dictionary";
+                config.Route = $"{config.Route}&{ScopeKey}={DictionaryScope}";
 
-                return new HttpApiConfigurationClient(TranslationServiceAction.TranslationDictionary, config);
+                return config;
             }
         }
     }
