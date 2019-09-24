@@ -9,7 +9,8 @@ namespace TranslationServices
 
         private static readonly Dictionary<string, Func<HttpApiConfigurationDto>> Entries = new Dictionary<string, Func<HttpApiConfigurationDto>>()
         {
-            {TranslationServiceAction.TranslateText.Method, () => TranslationServicesStaticConfigurations.Translate},
+            {TranslationServiceAction.TranslateText.Method, () => TranslationServicesStaticConfigurations.TranslateText},
+            {TranslationServiceAction.TranslateHtml.Method, () => TranslationServicesStaticConfigurations.TranslateHtml},
             {TranslationServiceAction.Languages.Method, () => TranslationServicesStaticConfigurations.Languages},
             {TranslationServiceAction.Translations.Method, () => TranslationServicesStaticConfigurations.Translations},
             {TranslationServiceAction.Transliterations.Method, () => TranslationServicesStaticConfigurations.Transliterations},

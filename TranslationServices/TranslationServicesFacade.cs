@@ -28,6 +28,18 @@ namespace TranslationServices
             return await TranslationServicesProxy.GetInstance(_client, settings, requestBody).Send<TranslationResult[]>();
         }
 
+        public async Task<TranslationResult[]> TranslateHtml(string inputText, string[] languages, string from = "")
+        {
+            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.TranslateHtml.Method]();
+            from = string.IsNullOrEmpty(from) ? "" : $"from={from}";
+            var route = string.Join('&', settings.Route, $"{string.Join('&', languages.Select(x => $"to={x}"))}{from}");
+            settings.Route = route;
+            object[] body = { new { Text = inputText } };
+            var requestBody = JsonConvert.SerializeObject(body);
+
+            return await TranslationServicesProxy.GetInstance(_client, settings, requestBody).Send<TranslationResult[]>();
+        }
+
         public async Task<LanguagesResult> GetLanguages()
         {
             var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.Languages.Method]();

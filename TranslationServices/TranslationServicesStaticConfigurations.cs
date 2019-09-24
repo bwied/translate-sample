@@ -38,16 +38,35 @@ namespace TranslationServices
             return baseConfig;
         }
 
-        public static HttpApiConfigurationClient Translate
+        private static HttpApiConfigurationDto GetBaseTranslateConfig()
+        {
+            var config = GetBaseConfig();
+
+            config.Method = HttpMethod.Post.Method;
+            config.Route = $"translate?api-version={ApiVersion}";
+
+            return config;
+        }
+
+        public static HttpApiConfigurationClient TranslateText
         {
             get
             {
-                var config = GetBaseConfig();
-
-                config.Method = HttpMethod.Post.Method;
-                config.Route = $"translate?api-version={ApiVersion}";
+                var config = GetBaseTranslateConfig();
 
                 return new HttpApiConfigurationClient(TranslationServiceAction.TranslateText, config);
+            }
+        }
+
+        public static HttpApiConfigurationClient TranslateHtml
+        {
+            get
+            {
+                var config = GetBaseTranslateConfig();
+
+                config.Route += "&textType=html";
+
+                return  new HttpApiConfigurationClient(TranslationServiceAction.TranslateHtml, config);
             }
         }
 

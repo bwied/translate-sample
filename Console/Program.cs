@@ -15,7 +15,6 @@ namespace translate_sample
     class Program
     {
         private Dictionary<string, Dictionary<Action, string>> _options;
-        private readonly TranslationProxy _proxy = new TranslationProxy();
         private static TranslationServicesFacade _service;
 
         static void Main(string[] args)
@@ -76,7 +75,6 @@ namespace translate_sample
                             "General", new Dictionary<Action, string>()
                             {
                                 {Translate, "Translate"},
-                                {TranslateToKlingon, "Get Klingon Translation"},
                                 {TranslateHtml, "Translate HTML"},
                                 {Translations, "Get Translations"},
                                 {Transliterations, "Get Transliterations" },
@@ -115,28 +113,6 @@ namespace translate_sample
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
 
-        private void TranslateToKlingon()
-        {
-            // Prompts you for text to translate. If you'd prefer, you can
-            // provide a string as textToTranslate.
-            Console.WriteLine("Type the phrase you'd like to translate? ");
-            string textToTranslate = Console.ReadLine();
-            var deserializedOutput = _proxy.TranslateTextRequest(textToTranslate, new[] {
-                "tlh"
-            }).Result;
-
-            foreach (TranslationResult o in deserializedOutput)
-            {
-                // Print the detected input language and confidence score.
-                Console.WriteLine("Detected input language: {0}\nConfidence score: {1}\n", o.DetectedLanguage.Language, o.DetectedLanguage.Score);
-                // Iterate over the results and print each translation.
-                foreach (Translation t in o.Translations)
-                {
-                    Console.WriteLine("Translated to {0}: {1}", t.To, t.Text);
-                }
-            }
-        }
-
         private void TranslateHtml()
         {
             // Prompts you for text to translate. If you'd prefer, you can
@@ -145,20 +121,9 @@ namespace translate_sample
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
             string textToTranslate = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _proxy.TranslateHtmlRequest(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries)).Result;
+            var deserializedOutput = _service.TranslateHtml(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries)).Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
-
-            //foreach (TranslationResult o in deserializedOutput)
-            //{
-            //    // Print the detected input language and confidence score.
-            //    Console.WriteLine("Detected input language: {0}\nConfidence score: {1}\n", o.DetectedLanguage.Language, o.DetectedLanguage.Score);
-            //    // Iterate over the results and print each translation.
-            //    foreach (Translation t in o.Translations)
-            //    {
-            //        Console.WriteLine("Translated to {0}: {1}", t.To, t.Text);
-            //    }
-            //}
         }
 
         private void Translations()
