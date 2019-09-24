@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FactoryRegistry\FactoryRegistry.csproj" />
-    <ProjectReference Include="..\HttpRequestUtility\HttpRequestUtility.csproj" />
   </ItemGroup>
 
 </Project>

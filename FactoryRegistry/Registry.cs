@@ -7,7 +7,7 @@ namespace TranslationServices
     {
         private Func<TEntry> _defaultEntry;
 
-        internal Registry(IDictionary<TKey, Func<TEntry>> entries, Func<TEntry> defaultEntry) : base(entries)
+        protected Registry(IDictionary<TKey, Func<TEntry>> entries, Func<TEntry> defaultEntry) : base(entries)
         {
             _defaultEntry = defaultEntry;
         }

@@ -161,7 +161,10 @@ namespace translate_sample
             try
             {
                 var a = HttpMethodRegistry.Instance;
-
+                Console.WriteLine($"var a = HttpMethodRegistry.Instance");
+                Console.WriteLine($"var b = HttpMethodRegistry.Instance");
+                var sameReference = (a == b);
+                Console.WriteLine($"var sameReference = (a == b): {sameReference}");
                 var method = a[HttpMethod.Get.Method]();
                 Console.WriteLine($"var method = a[HttpMethod.Get.Method]: {method.Method}");
                 var method2 = b[HttpMethod.Delete.Method]();
