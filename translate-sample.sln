@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpRequestUtility", "HttpR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FactoryRegistry", "FactoryRegistry\FactoryRegistry.csproj", "{F6F24C90-15D7-4410-8307-24C47977FFA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslateWebApi", "TranslateWebApi\TranslateWebApi.csproj", "{34062D77-8210-4ED2-AE89-76727822B11A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F6F24C90-15D7-4410-8307-24C47977FFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6F24C90-15D7-4410-8307-24C47977FFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6F24C90-15D7-4410-8307-24C47977FFA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34062D77-8210-4ED2-AE89-76727822B11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34062D77-8210-4ED2-AE89-76727822B11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34062D77-8210-4ED2-AE89-76727822B11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34062D77-8210-4ED2-AE89-76727822B11A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
