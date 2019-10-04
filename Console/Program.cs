@@ -108,7 +108,7 @@ namespace translate_sample
             Console.WriteLine("Enter 'from' language (blank for auto-detect):");
             var from = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _service.TranslateText(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result;
+            var deserializedOutput = _service.TranslateTextAsync(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
@@ -121,35 +121,35 @@ namespace translate_sample
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
             string textToTranslate = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _service.TranslateHtml(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries)).Result;
+            var deserializedOutput = _service.TranslateHtmlAsync(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries)).Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
 
         private void Translations()
         {
-            var deserializedOutput = _service.GetTranslations().Result;
+            var deserializedOutput = _service.GetTranslationsAsync().Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
 
         private void Transliterations()
         {
-            var deserializedOutput = _service.GetTransliterations().Result;
+            var deserializedOutput = _service.GetTransliterationsAsync().Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
 
         private void TranslationDictionary()
         {
-            var deserializedOutput = _service.GetTranslationDictionary().Result;
+            var deserializedOutput = _service.GetTranslationDictionaryAsync().Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
 
         private void Languages()
         {
-            var deserializedOutput = _service.GetLanguages().Result;
+            var deserializedOutput = _service.GetLanguagesAsync().Result;
 
             Console.WriteLine("Languages:");
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
