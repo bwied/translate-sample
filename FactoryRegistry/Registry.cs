@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using TranslationServices;
 
-namespace TranslationServices
+namespace FactoryRegistry
 {
     public abstract class Registry<TKey, TEntry> : Dictionary<TKey, Func<TEntry>>, IRegistry<TKey, TEntry>
     {
