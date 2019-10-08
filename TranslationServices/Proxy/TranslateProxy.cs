@@ -10,13 +10,15 @@ namespace TranslationServices.Proxy
 {
     internal class TranslateProxy : TranslationServicesProxy
     {
-        public TranslateProxy(HttpClient client, string[] languages, string requestBody, HttpRequestDto config = null, string from = null) : base(client, config)
+        public TranslateProxy(HttpClient client, string[] languages, string requestBody, string from, HttpRequestDto request = null) : base(client, request)
         {
             SetLanguageParameters(languages);
-            SetFromParameter(from);
             SetContent(requestBody);
-            Request.Method = HttpMethod.Post.Method;
-            Request.Route = Config.TranslateRoute;
+            SetFromParameter(from);
+
+            if (request != null) return;
+
+            SetDefaults();
         }
 
         public async Task<HttpResponseDto<TranslationResult[]>> Send()
@@ -24,14 +26,24 @@ namespace TranslationServices.Proxy
             return await base.Send<TranslationResult[]>();
         }
 
+        private void SetDefaults()
+        {
+            Request.Parameters.Add($"{Config.IncludeSentenceLengthKey}={true}");
+            Request.Parameters.Add($"{Config.ProfanityActionKey}={Config.ProfanityActionMarked}");
+            Request.Parameters.Add($"{Config.ProfanityMarkerKey}={Config.ProfanityMarkerTag}");
+            Request.Parameters.Add($"{Config.IncludeAlignmentKey}={true}");
+            Request.Method = HttpMethod.Post.Method;
+            Request.Route = Config.TranslateRoute;
+        }
+
         private void SetLanguageParameters(string[] languages)
         {
-            Request.Parameters.AddRange(languages.Select(x => $"{Config.To}={x}"));
+            Request.Parameters.AddRange(languages.Select(x => $"{Config.ToKey}={x}"));
         }
 
         private void SetFromParameter(string from)
         {
-            from = string.IsNullOrEmpty(from) ? "" : $"{Config.From}={from}";
+            from = string.IsNullOrEmpty(from) ? "" : $"{Config.FromKey}={from}";
             if (!string.IsNullOrEmpty(from))
             {
                 Request.Parameters.Add(from);

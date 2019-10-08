@@ -6,10 +6,12 @@ namespace TranslationServices.Proxy
 {
     internal class TranslateHtmlProxy : TranslateProxy
     {
-        public TranslateHtmlProxy(HttpClient client, string[] languages, string requestBody, HttpRequestDto request = null, string from = null) 
-            : base(client, languages, requestBody, request, from)
+        public TranslateHtmlProxy(HttpClient client, string[] languages, string requestBody, string from, HttpRequestDto request = null) 
+            : base(client, languages, requestBody, from, request)
         {
-            Request.Parameters.Add($"{Config.TextType}={Config.HtmlTextType}");
+            if (request != null) return;
+
+            Request.Parameters.Add($"{Config.TextTypeKey}={Config.TextTypeHtml}");
         }
     }
 }

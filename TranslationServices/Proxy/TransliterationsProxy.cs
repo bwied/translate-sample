@@ -6,9 +6,9 @@ namespace TranslationServices.Proxy
 {
     internal class TransliterationsProxy : LanguagesProxy
     {
-        public TransliterationsProxy(HttpClient client, HttpRequestDto config = null) : base(client, config)
+        public TransliterationsProxy(HttpClient client, HttpRequestDto request = null) : base(client, request)
         {
-            if (config != null) return;
+            if (request != null) return;
 
             Request.Parameters.Add($"{Config.ScopeKey}={Config.TransliterationScope}");
         }

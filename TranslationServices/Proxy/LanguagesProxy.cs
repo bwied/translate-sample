@@ -7,9 +7,9 @@ namespace TranslationServices.Proxy
 {
     internal class LanguagesProxy : TranslationServicesProxy
     {
-        public LanguagesProxy(HttpClient client, HttpRequestDto config = null) : base(client, config)
+        public LanguagesProxy(HttpClient client, HttpRequestDto request = null) : base(client, request)
         {
-            if (config != null) return;
+            if (request != null) return;
 
             Request.Method = HttpMethod.Get.Method;
             Request.Route = Config.LanguageRoute;
