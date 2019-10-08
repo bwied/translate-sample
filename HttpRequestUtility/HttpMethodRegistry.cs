@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using FactoryRegistry;
+using TranslationServices;
 
-namespace TranslationServices
+namespace HttpRequestUtility
 {
-    public class HttpMethodRegistry : Registry<string, HttpMethod>
+    public class HttpMethodRegistry : RegistryDictionary<string, HttpMethod>
     {
         private static HttpMethodRegistry _instance;
 

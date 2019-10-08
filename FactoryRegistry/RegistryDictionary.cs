@@ -4,11 +4,16 @@ using TranslationServices;
 
 namespace FactoryRegistry
 {
-    public abstract class Registry<TKey, TEntry> : Dictionary<TKey, Func<TEntry>>, IRegistry<TKey, TEntry>
+    /// <summary>
+    /// Provides a generic interface to encapsulate domain logic execution via a dictionary of functions.
+    /// </summary>
+    /// <typeparam name="TKey">Domain specific definition</typeparam>
+    /// <typeparam name="TEntry">Executable function wrapper for domain specific logic.</typeparam>
+    public abstract class RegistryDictionary<TKey, TEntry> : Dictionary<TKey, Func<TEntry>>, IRegistry<TKey, TEntry>
     {
         private Func<TEntry> _defaultEntry;
 
-        protected Registry(IDictionary<TKey, Func<TEntry>> entries, Func<TEntry> defaultEntry) : base(entries)
+        protected RegistryDictionary(IDictionary<TKey, Func<TEntry>> entries, Func<TEntry> defaultEntry) : base(entries)
         {
             _defaultEntry = defaultEntry;
         }

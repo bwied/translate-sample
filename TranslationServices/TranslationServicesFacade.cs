@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using HttpRequestUtility;
+using TranslationServices.Proxy;
 
 namespace TranslationServices
 {
@@ -16,69 +17,70 @@ namespace TranslationServices
             _client?.Dispose();
         }
 
-        public TranslationResult[] TranslateText(string inputText, string[] languages, string from = "")
+        #region Translate
+
+        public HttpResponseDto<TranslationResult[]> TranslateText(string inputText, string[] languages, string from = "")
         {
             return TranslateTextAsync(inputText, languages, from).Result;
         }
 
-        public async Task<TranslationResult[]> TranslateTextAsync(string inputText, string[] languages, string from = "")
+        public async Task<HttpResponseDto<TranslationResult[]>> TranslateTextAsync(string inputText, string[] languages, string from = "")
         {
-            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.TranslateText.Method]();
-            from = string.IsNullOrEmpty(from) ? "" : $"&from={from}";
-            var route = string.Join('&', settings.Route, $"{string.Join('&', languages.Select(x => $"to={x}"))}{from}");
-            settings.Route = route;
-            object[] body = { new { Text = inputText } };
-            var requestBody = JsonConvert.SerializeObject(body);
+            var proxy = new TranslateProxy(_client, languages, inputText, from: from);
+            var response = await proxy.Send();
 
-            return await TranslationServicesProxy.GetInstance(_client, settings, requestBody).Send<TranslationResult[]>();
+            return response;
         }
 
-        public TranslationResult[] TranslateHtml(string inputText, string[] languages, string from = "")
+        public HttpResponseDto<TranslationResult[]> TranslateHtml(string inputText, string[] languages, string from = "")
         {
-            try
-            {
-                return TranslateHtmlAsync(inputText, languages, from).Result;
-            }
-            catch (Exception e)
-            {
-                return new TranslationResult[] { new TranslationResult() { Translations = new Translation[] { new Translation() { Text = inputText } } } };
-            }
+            return TranslateHtmlAsync(inputText, languages, from).Result;
         }
 
-        public async Task<TranslationResult[]> TranslateHtmlAsync(string inputText, string[] languages, string from = "")
+        public async Task<HttpResponseDto<TranslationResult[]>> TranslateHtmlAsync(string inputText, string[] languages, string from = "")
         {
-            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.TranslateHtml.Method]();
-            from = string.IsNullOrEmpty(from) ? "" : $"&from={from}";
-            var route = string.Join('&', settings.Route, $"{string.Join('&', languages.Select(x => $"to={x}"))}{from}");
-            settings.Route = route;
-            object[] body = { new { Text = inputText } };
-            var requestBody = JsonConvert.SerializeObject(body);
+            var proxy = new TranslateHtmlProxy(_client, languages, inputText, from: from);
+            var response = await proxy.Send();
 
-            return await TranslationServicesProxy.GetInstance(_client, settings, requestBody).Send<TranslationResult[]>();
+            return response;
         }
 
-        public async Task<LanguagesResult> GetLanguagesAsync()
+        #endregion //Translate
+
+        #region Languages
+
+        public async Task<HttpResponseDto<LanguagesResult>> GetLanguagesAsync()
         {
-            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.Languages.Method]();
-            return await TranslationServicesProxy.GetInstance(_client, settings).Send<LanguagesResult>();
+            var proxy = new LanguagesProxy(_client);
+            var response = await proxy.Send();
+
+            return response;
         }
 
-        public async Task<Dictionary<string, Dictionary<string, Language>>> GetTranslationsAsync()
+        public async Task<HttpResponseDto<LanguagesResult>> GetTranslationsAsync()
         {
-            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.Translations.Method]();
-            return await TranslationServicesProxy.GetInstance(_client, settings).Send<Dictionary<string, Dictionary<string, Language>>>();
+            var proxy = new TranslationsProxy(_client);
+            var response = await proxy.Send();
+
+            return response;
         }
 
-        public async Task<Dictionary<string, Dictionary<string, Transliteration>>> GetTransliterationsAsync()
+        public async Task<HttpResponseDto<LanguagesResult>> GetTransliterationsAsync()
         {
-            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.Transliterations.Method]();
-            return await TranslationServicesProxy.GetInstance(_client, settings).Send<Dictionary<string, Dictionary<string, Transliteration>>>();
+            var proxy = new TransliterationsProxy(_client);
+            var response = await proxy.Send();
+
+            return response;
         }
 
-        public async Task<Dictionary<string, Dictionary<string, TranslationKeyValue>>> GetTranslationDictionaryAsync()
+        public async Task<HttpResponseDto<LanguagesResult>> GetTranslationDictionaryAsync()
         {
-            var settings = TranslationServicesRegistry.Instance[TranslationServiceAction.TranslationDictionary.Method]();
-            return await TranslationServicesProxy.GetInstance(_client, settings).Send<Dictionary<string, Dictionary<string, TranslationKeyValue>>>();
+            var proxy = new TranslationDictionaryProxy(_client);
+            var response = await proxy.Send();
+
+            return response;
         }
+
+        #endregion //Languages
     }
 }

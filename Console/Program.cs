@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttpRequestUtility;
 // Install Newtonsoft.Json with NuGet
 using Newtonsoft.Json;
 using TranslationServices;
@@ -79,8 +80,7 @@ namespace translate_sample
                                 {Translations, "Get Translations"},
                                 {Transliterations, "Get Transliterations" },
                                 {TranslationDictionary, "Get TranslationDictionary" },
-                                {Languages, "Get Languages" },
-                                {test, "test" }
+                                {Languages, "Get Languages" }
                             }
                         }
                     };
@@ -120,8 +120,10 @@ namespace translate_sample
             Console.WriteLine("Type the phrase you'd like to translate? ");
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
             string textToTranslate = Console.ReadLine();
+            Console.WriteLine("Enter 'from' language (blank for auto-detect):");
+            var from = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _service.TranslateHtmlAsync(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries)).Result;
+            var deserializedOutput = _service.TranslateHtmlAsync(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
@@ -153,32 +155,6 @@ namespace translate_sample
 
             Console.WriteLine("Languages:");
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
-        }
-
-        private void test()
-        {
-            var b = HttpMethodRegistry.Instance;
-            try
-            {
-                var a = HttpMethodRegistry.Instance;
-                Console.WriteLine($"var a = HttpMethodRegistry.Instance");
-                Console.WriteLine($"var b = HttpMethodRegistry.Instance");
-                var sameReference = (a == b);
-                Console.WriteLine($"var sameReference = (a == b): {sameReference}");
-                var method = a[HttpMethod.Get.Method]();
-                Console.WriteLine($"var method = a[HttpMethod.Get.Method]: {method.Method}");
-                var method2 = b[HttpMethod.Delete.Method]();
-                Console.WriteLine($"var method2 = b[HttpMethod.Delete.Method]: {method2.Method}");
-                var method3 = a[HttpMethod.Post.Method]();
-                Console.WriteLine($"var method3 = a[HttpMethod.Post.Method]: {method3.Method}");
-                var method4 = a["Unknown"]();
-                Console.WriteLine($"var method4 = a[\"Unknown\"]: {method4.Method}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
     }
 }

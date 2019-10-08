@@ -35,7 +35,7 @@ namespace TranslateWebApi.Controllers
         public string Post([FromBody] TranslationRequest request)
         {
             var svc = new TranslationServicesFacade();
-            var translatedHtml = svc.TranslateHtml(request.InputText, new[] {request.LanguageTag})?.SingleOrDefault()?.Translations.SingleOrDefault()?.Text;
+            var translatedHtml = svc.TranslateHtml(request.InputText, new[] {request.LanguageTag}).Response.SingleOrDefault()?.Translations.SingleOrDefault()?.Text;
 
             return translatedHtml;
         }
