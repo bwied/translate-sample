@@ -8,7 +8,7 @@ using TranslationServices.Proxy;
 
 namespace TranslationServices
 {
-    public class TranslationServicesFacade : IDisposable
+    public class TranslationServicesFacade : ITranslationServicesFacade
     {
         private readonly HttpClient _client = new HttpClient();
 
