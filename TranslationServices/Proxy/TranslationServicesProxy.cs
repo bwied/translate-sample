@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using HttpRequestUtility;
-using Config = TranslationServices.TranslationServicesStaticConfigurations;
+using Config = TranslationServices.TranslationServices.ApiParameters;
 
 namespace TranslationServices.Proxy
 {
@@ -10,15 +10,8 @@ namespace TranslationServices.Proxy
     {
         protected TranslationServicesProxy(HttpClient client, TranslationServiceHttpRequestDto config = null) : base(client, config ?? new TranslationServiceHttpRequestDto())
         {
-            if (null == Config.Token)
-            {
-                throw new Exception("Please set/export the environment variable: " + Config.KeyVar);
-            }
-
-            if (null == Config.Host)
-            {
-                throw new Exception("Please set/export the environment variable: " + Config.EndpointVar);
-            }
+            if (null == Config.Token) throw new Exception($"{Config.EnvironmentVariableExceptionMessage}{Config.KeyVar}");
+            if (null == Config.Host) throw new Exception($"{Config.EnvironmentVariableExceptionMessage}{Config.EndpointVar}");
 
             Request.Host = new Uri(Config.Host).Host;
             Request.Token = Config.Token;

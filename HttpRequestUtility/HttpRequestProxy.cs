@@ -21,14 +21,14 @@ namespace HttpRequestUtility
             Request = request;
         }
 
-        public async Task<HttpResponseDto<TResponse>> Send<TResponse>()
+        public async Task<HttpResponse<TResponse>> Send<TResponse>()
         {
             using (var httpRequest = GetRequestMessage())
             {
                 // Send the request and get response.
                 HttpResponseMessage response = await _client.SendAsync(httpRequest).ConfigureAwait(false);
 
-                return new HttpResponseDto<TResponse>() { Response = response };
+                return new HttpResponse<TResponse>() { Response = response };
             }
         }
 

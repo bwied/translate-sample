@@ -19,12 +19,12 @@ namespace TranslationServices
 
         #region Translate
 
-        public HttpResponseDto<TranslationResult[]> TranslateText(string inputText, string[] languages, string from = "")
+        public HttpResponse<TranslationResult[]> TranslateText(string inputText, string[] languages, string from = "")
         {
             return TranslateTextAsync(inputText, languages, from).Result;
         }
 
-        public async Task<HttpResponseDto<TranslationResult[]>> TranslateTextAsync(string inputText, string[] languages, string from = "")
+        public async Task<HttpResponse<TranslationResult[]>> TranslateTextAsync(string inputText, string[] languages, string from = "")
         {
             var proxy = new TranslateProxy(_client, languages, inputText, from: from);
             var response = await proxy.Send();
@@ -32,12 +32,12 @@ namespace TranslationServices
             return response;
         }
 
-        public HttpResponseDto<TranslationResult[]> TranslateHtml(string inputText, string[] languages, string from = "")
+        public HttpResponse<TranslationResult[]> TranslateHtml(string inputText, string[] languages, string from = "")
         {
             return TranslateHtmlAsync(inputText, languages, from).Result;
         }
 
-        public async Task<HttpResponseDto<TranslationResult[]>> TranslateHtmlAsync(string inputText, string[] languages, string from = "")
+        public async Task<HttpResponse<TranslationResult[]>> TranslateHtmlAsync(string inputText, string[] languages, string from = "")
         {
             var proxy = new TranslateHtmlProxy(_client, languages, inputText, from: from);
             var response = await proxy.Send();
@@ -49,7 +49,7 @@ namespace TranslationServices
 
         #region Languages
 
-        public async Task<HttpResponseDto<LanguagesResult>> GetLanguagesAsync()
+        public async Task<HttpResponse<LanguagesResult>> GetLanguagesAsync()
         {
             var proxy = new LanguagesProxy(_client);
             var response = await proxy.Send();
@@ -57,7 +57,7 @@ namespace TranslationServices
             return response;
         }
 
-        public async Task<HttpResponseDto<LanguagesResult>> GetTranslationsAsync()
+        public async Task<HttpResponse<LanguagesResult>> GetTranslationsAsync()
         {
             var proxy = new TranslationsProxy(_client);
             var response = await proxy.Send();
@@ -65,7 +65,7 @@ namespace TranslationServices
             return response;
         }
 
-        public async Task<HttpResponseDto<LanguagesResult>> GetTransliterationsAsync()
+        public async Task<HttpResponse<LanguagesResult>> GetTransliterationsAsync()
         {
             var proxy = new TransliterationsProxy(_client);
             var response = await proxy.Send();
@@ -73,7 +73,7 @@ namespace TranslationServices
             return response;
         }
 
-        public async Task<HttpResponseDto<LanguagesResult>> GetTranslationDictionaryAsync()
+        public async Task<HttpResponse<LanguagesResult>> GetTranslationDictionaryAsync()
         {
             var proxy = new TranslationDictionaryProxy(_client);
             var response = await proxy.Send();

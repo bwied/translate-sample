@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using HttpRequestUtility;
-using Config = TranslationServices.TranslationServicesStaticConfigurations;
+using Config = TranslationServices.TranslationServices.TranslateParameters;
 
 namespace TranslationServices.Proxy
 {

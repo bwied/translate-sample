@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using HttpRequestUtility;
-using Config = TranslationServices.TranslationServicesStaticConfigurations;
+using Config = TranslationServices.TranslationServices.LanguageParameters;
 
 namespace TranslationServices.Proxy
 {
@@ -15,7 +15,7 @@ namespace TranslationServices.Proxy
             Request.Route = Config.LanguageRoute;
         }
 
-        public async Task<HttpResponseDto<LanguagesResult>> Send()
+        public async Task<HttpResponse<LanguagesResult>> Send()
         {
             return await base.Send<LanguagesResult>();
         }

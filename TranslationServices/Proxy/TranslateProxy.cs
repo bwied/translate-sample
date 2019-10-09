@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HttpRequestUtility;
 using Newtonsoft.Json;
-using Config = TranslationServices.TranslationServicesStaticConfigurations;
+using Config = TranslationServices.TranslationServices.TranslateParameters;
 
 namespace TranslationServices.Proxy
 {
@@ -22,7 +22,7 @@ namespace TranslationServices.Proxy
             SetDefaults();
         }
 
-        public async Task<HttpResponseDto<TranslationResult[]>> Send()
+        public async Task<HttpResponse<TranslationResult[]>> Send()
         {
             return await base.Send<TranslationResult[]>();
         }

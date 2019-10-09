@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace HttpRequestUtility
 {
-    public class HttpResponseDto<T>
+    public class HttpResponse<T>
     {
         private T _object;
         public HttpResponseMessage Response { get; set; }
