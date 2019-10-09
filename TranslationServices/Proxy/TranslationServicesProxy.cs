@@ -6,17 +6,9 @@ using Config = TranslationServices.TranslationServicesStaticConfigurations;
 
 namespace TranslationServices.Proxy
 {
-    internal class TranslationServicesProxy : HttpRequestProxy
+    internal class TranslationServicesProxy : HttpRequestProxy<TranslationServiceHttpRequestDto>
     {
-        protected TranslationServicesProxy(HttpClient client, HttpRequestDto config = null) : base(client, config ?? new HttpRequestDto()
-        {
-            Host = new Uri(Config.Host).Host,
-            Token = Config.Token,
-            Scheme = Config.Scheme,
-            ApiVersion = Config.ApiVersion,
-            Headers = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>(Config.TokenKey, Config.Token) },
-            Parameters = new List<string>() { $"{Config.ApiVersionKey}={Config.ApiVersion}" }
-        })
+        protected TranslationServicesProxy(HttpClient client, TranslationServiceHttpRequestDto config = null) : base(client, config ?? new TranslationServiceHttpRequestDto())
         {
             if (null == Config.Token)
             {
@@ -27,6 +19,13 @@ namespace TranslationServices.Proxy
             {
                 throw new Exception("Please set/export the environment variable: " + Config.EndpointVar);
             }
+
+            Request.Host = new Uri(Config.Host).Host;
+            Request.Token = Config.Token;
+            Request.Scheme = Config.Scheme;
+            Request.ApiVersion = Config.ApiVersion;
+            Request.Headers = new List<KeyValuePair<string, string>>() {new KeyValuePair<string, string>(Config.TokenKey, Config.Token)};
+            Request.Parameters = new List<string>() {$"{Config.ApiVersionKey}={Config.ApiVersion}"};
         }
 
     }

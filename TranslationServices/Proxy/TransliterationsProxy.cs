@@ -6,7 +6,7 @@ namespace TranslationServices.Proxy
 {
     internal class TransliterationsProxy : LanguagesProxy
     {
-        public TransliterationsProxy(HttpClient client, HttpRequestDto request = null) : base(client, request)
+        public TransliterationsProxy(HttpClient client, TranslationServiceHttpRequestDto request = null) : base(client, request)
         {
             if (request != null) return;
 

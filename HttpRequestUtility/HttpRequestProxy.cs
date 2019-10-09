@@ -7,46 +7,43 @@ using Newtonsoft.Json;
 
 namespace HttpRequestUtility
 {
-    public class HttpRequestProxy : IHttpRequestProxy
+    public class HttpRequestProxy<T> : IHttpRequestProxy where T: HttpRequestDto
     {
         private readonly HttpClient _client;
-        protected readonly HttpRequestDto Request;
 
-        protected HttpRequestProxy(HttpClient client, HttpRequestDto request)
+        protected T Request { get; }
+        protected Uri Uri => new Uri($"{Request.Scheme}://{Request.Host}/{string.Join('?', Request.Route, Query)}");
+        protected string Query => string.Join('&', Request.Parameters);
+
+        protected HttpRequestProxy(HttpClient client, T request)
         {
             _client = client;
             Request = request;
         }
 
-        public async Task<HttpResponseDto<T>> Send<T>()
+        public async Task<HttpResponseDto<TResponse>> Send<TResponse>()
         {
-            using (var request = GetRequestMessage())
+            using (var httpRequest = GetRequestMessage())
             {
                 // Send the request and get response.
-                HttpResponseMessage response = await _client.SendAsync(request).ConfigureAwait(false);
+                HttpResponseMessage response = await _client.SendAsync(httpRequest).ConfigureAwait(false);
 
-                // Read response as a string.
-                var result = await response.Content.ReadAsStringAsync();
-
-                // Deserialize the response using the classes created earlier.
-                var deserializedOutput = JsonConvert.DeserializeObject<T>(result);
-
-                return new HttpResponseDto<T>(){ RequestUri =  Request.Uri, Response = deserializedOutput};
+                return new HttpResponseDto<TResponse>() { Response = response };
             }
         }
 
         private HttpRequestMessage GetRequestMessage()
         {
-            var request = new HttpRequestMessage()
+            var httpRequest = new HttpRequestMessage()
             {
                 Method = HttpMethodRegistry.Instance[Request.Method](),
-                RequestUri = new Uri(Request.Uri),
+                RequestUri = Uri,
                 Content = Request.Body
             };
 
-            Request.Headers.ToList().ForEach(x => request.Headers.Add(x.Key, x.Value));
+            Request.Headers.ToList().ForEach(x => httpRequest.Headers.Add(x.Key, x.Value));
 
-            return request;
+            return httpRequest;
         }
     }
 }

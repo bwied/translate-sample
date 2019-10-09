@@ -5,6 +5,6 @@ namespace HttpRequestUtility
 {
     public interface IHttpRequestProxy
     {
-        Task<HttpResponseDto<T>> Send<T>();
+        Task<HttpResponseDto<TResponse>> Send<TResponse>();
     }
 }
