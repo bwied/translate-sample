@@ -12,14 +12,14 @@ namespace HttpRequestUtility
 
         private static readonly Dictionary<string, Func<HttpMethod>> Entries = new Dictionary<string, Func<HttpMethod>>()
         {
-            {"GET", () => HttpMethod.Get},
-            {"PUT", () => HttpMethod.Put},
-            {"POST", () => HttpMethod.Post},
-            {"DELETE", () => HttpMethod.Delete},
-            {"HEAD", () => HttpMethod.Head},
-            {"OPTIONS", () => HttpMethod.Options},
-            {"PATCH", () => HttpMethod.Patch},
-            {"TRACE", () => HttpMethod.Trace}
+            {HttpMethod.Get.Method, () => HttpMethod.Get},
+            {HttpMethod.Put.Method, () => HttpMethod.Put},
+            {HttpMethod.Post.Method, () => HttpMethod.Post},
+            {HttpMethod.Delete.Method, () => HttpMethod.Delete},
+            {HttpMethod.Head.Method, () => HttpMethod.Head},
+            {HttpMethod.Options.Method, () => HttpMethod.Options},
+            {HttpMethod.Patch.Method, () => HttpMethod.Patch},
+            {HttpMethod.Trace.Method, () => HttpMethod.Trace}
         };
 
         private HttpMethodRegistry() : base(Entries, () => HttpMethod.Post)
