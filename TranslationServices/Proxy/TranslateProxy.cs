@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using HttpRequestUtility;
 using Newtonsoft.Json;
-using Config = TranslationServices.TranslationServices.TranslateParameters;
+using Config = TranslationServices.Configuration.TranslateParameters;
 
 namespace TranslationServices.Proxy
 {
     internal class TranslateProxy : TranslationServicesProxy
     {
-        public TranslateProxy(HttpClient client, string[] languages, string requestBody, string from, TranslationServiceHttpRequestDto request = null) : base(client, request)
+        public TranslateProxy(HttpClient client, string[] languages, string requestBody, string from, HttpRequestDto request = null) : base(client, request)
         {
             SetLanguageParameters(languages);
             SetContent(requestBody);

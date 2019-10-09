@@ -6,7 +6,7 @@ using HttpRequestUtility;
 
 namespace TranslationServices
 {
-    internal static class TranslationServices
+    internal static class Configuration
     {
         public static class ApiParameters
         {
