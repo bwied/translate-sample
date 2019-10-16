@@ -18,7 +18,6 @@ namespace HttpRequestUtility
             {HttpMethod.Delete.Method, () => HttpMethod.Delete},
             {HttpMethod.Head.Method, () => HttpMethod.Head},
             {HttpMethod.Options.Method, () => HttpMethod.Options},
-            {HttpMethod.Patch.Method, () => HttpMethod.Patch},
             {HttpMethod.Trace.Method, () => HttpMethod.Trace}
         };
 

@@ -19,12 +19,12 @@ namespace TranslationServices
 
         #region Translate
 
-        public HttpResponse<TranslationResult[]> TranslateText(string inputText, string[] languages, string from = "")
+        public HttpResponse<TranslationResult[]> TranslateText(List<string> inputText, string[] languages, string from = "")
         {
             return TranslateTextAsync(inputText, languages, from).Result;
         }
 
-        public async Task<HttpResponse<TranslationResult[]>> TranslateTextAsync(string inputText, string[] languages, string from = "")
+        public async Task<HttpResponse<TranslationResult[]>> TranslateTextAsync(List<string> inputText, string[] languages, string from = "")
         {
             var proxy = new TranslateProxy(_client, languages, inputText, from: from);
             var response = await proxy.Send();
@@ -32,12 +32,12 @@ namespace TranslationServices
             return response;
         }
 
-        public HttpResponse<TranslationResult[]> TranslateHtml(string inputText, string[] languages, string from = "")
+        public HttpResponse<TranslationResult[]> TranslateHtml(List<string> inputText, string[] languages, string from = "")
         {
             return TranslateHtmlAsync(inputText, languages, from).Result;
         }
 
-        public async Task<HttpResponse<TranslationResult[]>> TranslateHtmlAsync(string inputText, string[] languages, string from = "")
+        public async Task<HttpResponse<TranslationResult[]>> TranslateHtmlAsync(List<string> inputText, string[] languages, string from = "")
         {
             var proxy = new TranslateHtmlProxy(_client, languages, inputText, from: from);
             var response = await proxy.Send();

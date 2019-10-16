@@ -47,9 +47,9 @@ namespace FactoryRegistry
             else if (entries != null)
             {
                 base.Clear();
-                foreach (var (key, value) in entries)
+                foreach (var entry in entries)
                 {
-                    base.Add(key, value);
+                    base.Add(entry.Key, entry.Value);
                 }
             }
         }

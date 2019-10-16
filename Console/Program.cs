@@ -108,7 +108,7 @@ namespace translate_sample
             Console.WriteLine("Enter 'from' language (blank for auto-detect):");
             var from = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _service.TranslateTextAsync(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result.Object;
+            var deserializedOutput = _service.TranslateTextAsync(new List<string>(){textToTranslate}, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result.Object;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }
@@ -123,7 +123,7 @@ namespace translate_sample
             Console.WriteLine("Enter 'from' language (blank for auto-detect):");
             var from = Console.ReadLine();
             Console.WriteLine("Enter the BCP 47 language tag(s):");
-            var deserializedOutput = _service.TranslateHtmlAsync(textToTranslate, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result.Object;
+            var deserializedOutput = _service.TranslateHtmlAsync(new List<string>() { textToTranslate }, Console.ReadLine()?.Split(',', StringSplitOptions.RemoveEmptyEntries), from).Result.Object;
 
             Console.WriteLine(JsonConvert.SerializeObject(deserializedOutput, Formatting.Indented));
         }

@@ -12,8 +12,8 @@ namespace HttpRequestUtility
         private readonly HttpClient _client;
 
         protected T Request { get; }
-        protected Uri Uri => new Uri($"{Request.Scheme}://{Request.Host}/{string.Join('?', Request.Route, Query)}");
-        protected string Query => string.Join('&', Request.Parameters);
+        protected Uri Uri => new Uri($"{Request.Scheme}://{Request.Host}/{string.Join("?", Request.Route, Query)}");
+        protected string Query => string.Join("&", Request.Parameters);
 
         protected HttpRequestProxy(HttpClient client, T request)
         {

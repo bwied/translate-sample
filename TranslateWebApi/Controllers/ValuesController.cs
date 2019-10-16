@@ -32,10 +32,10 @@ namespace TranslateWebApi.Controllers
         // POST api/values
         [HttpPost]
         [EnableCors("_myAllowSpecificOrigins")]
-        public string Post([FromBody] TranslationRequest request)
+        public List<string> Post([FromBody] TranslationRequest request)
         {
             var svc = new TranslationServicesFacade();
-            var translatedHtml = svc.TranslateHtml(request.InputText, new[] {request.LanguageTag}).Object.SingleOrDefault()?.Translations.SingleOrDefault()?.Text;
+            var translatedHtml = svc.TranslateHtml(request.InputText, new[] {request.LanguageTag}).Object.SelectMany(x => x.Translations.Select(y => y.Text)).ToList();
 
             return translatedHtml;
         }
@@ -55,7 +55,7 @@ namespace TranslateWebApi.Controllers
 
     public class TranslationRequest
     {
-        public string InputText { get; set; }
+        public List<string> InputText { get; set; }
         public string LanguageTag { get; set; }
         public string FromLanguage { get; set; }
     }

@@ -13,7 +13,7 @@ namespace TranslationServices.Proxy
             if (null == Config.Token) throw new Exception($"{Config.EnvironmentVariableExceptionMessage}{Config.KeyVar}");
             if (null == Config.Host) throw new Exception($"{Config.EnvironmentVariableExceptionMessage}{Config.EndpointVar}");
 
-            Request.Host = new Uri(Config.Host).Host;
+            Request.Host = Config.Host;
             Request.Scheme = Config.Scheme;
             Request.Headers = new List<KeyValuePair<string, string>>() {new KeyValuePair<string, string>(Config.TokenKey, Config.Token)};
             Request.Parameters = new List<string>() {$"{Config.ApiVersionKey}={Config.ApiVersion}"};

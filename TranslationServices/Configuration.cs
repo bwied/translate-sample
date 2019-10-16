@@ -14,10 +14,10 @@ namespace TranslationServices
             internal const string ApiVersionKey = "api-version";
             internal const string ApiVersion = "3.0";
             internal const string KeyVar = "TRANSLATOR_TEXT_SUBSCRIPTION_KEY";
-            internal static readonly string Token = Environment.GetEnvironmentVariable(KeyVar);
+            internal static readonly string Token = Environment.GetEnvironmentVariable(KeyVar, EnvironmentVariableTarget.Machine);
             internal const string EndpointVar = "TRANSLATOR_TEXT_ENDPOINT";
             internal static readonly string Scheme = Uri.UriSchemeHttps;
-            internal static readonly string Host = Environment.GetEnvironmentVariable(EndpointVar);
+            internal static readonly string Host = Environment.GetEnvironmentVariable(EndpointVar, EnvironmentVariableTarget.Machine);
             internal const string LanguageRoute = "languages";
             internal const string TranslateRoute = "translate";
             internal const string EnvironmentVariableExceptionMessage = "Please set/export the environment variable: ";

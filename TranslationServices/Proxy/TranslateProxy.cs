@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using HttpRequestUtility;
@@ -11,7 +11,7 @@ namespace TranslationServices.Proxy
 {
     internal class TranslateProxy : TranslationServicesProxy
     {
-        public TranslateProxy(HttpClient client, string[] languages, string requestBody, string from, HttpRequestDto request = null) : base(client, request)
+        public TranslateProxy(HttpClient client, string[] languages, List<string> requestBody, string from, HttpRequestDto request = null) : base(client, request)
         {
             SetLanguageParameters(languages);
             SetContent(requestBody);
@@ -51,14 +51,21 @@ namespace TranslationServices.Proxy
             }
         }
 
-        private void SetContent(string inputText)
+        private void SetContent(List<string> inputText)
         {
-            object[] body = { new { Text = inputText } };
+            var body = new object[inputText.Count];
+
+            for (int i = 0; i < inputText.Count; i++)
+            {
+                body[i] =  new { Text = inputText[i]};
+            }
+
+            //object[] body = { new { Text = inputText } };
             var requestBody = JsonConvert.SerializeObject(body);
 
             if (!string.IsNullOrEmpty(requestBody))
             {
-                Request.Body = new StringContent(requestBody, Encoding.UTF8, MediaTypeNames.Application.Json);
+                Request.Body = new StringContent(requestBody, Encoding.UTF8, "application/json");
             }
         }
     }
