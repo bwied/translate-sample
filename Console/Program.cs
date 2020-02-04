@@ -64,31 +64,21 @@ namespace translate_sample
             }
         }
 
-        private Dictionary<string, Dictionary<Action, string>> Options
-        {
-            get
+        private Dictionary<string, Dictionary<Action, string>> Options =>
+            _options ?? (_options = new Dictionary<string, Dictionary<Action, string>>()
             {
-                if (_options == null)
                 {
-                    _options = new Dictionary<string, Dictionary<Action, string>>()
+                    "General", new Dictionary<Action, string>()
                     {
-                        {
-                            "General", new Dictionary<Action, string>()
-                            {
-                                {Translate, "Translate"},
-                                {TranslateHtml, "Translate HTML"},
-                                {Translations, "Get Translations"},
-                                {Transliterations, "Get Transliterations" },
-                                {TranslationDictionary, "Get TranslationDictionary" },
-                                {Languages, "Get Languages" }
-                            }
-                        }
-                    };
+                        {Translate, "Translate"},
+                        {TranslateHtml, "Translate HTML"},
+                        {Translations, "Get Translations"},
+                        {Transliterations, "Get Transliterations"},
+                        {TranslationDictionary, "Get TranslationDictionary"},
+                        {Languages, "Get Languages"}
+                    }
                 }
-
-                return _options;
-            }
-        }
+            });
 
         private void Execute(string selection)
         {

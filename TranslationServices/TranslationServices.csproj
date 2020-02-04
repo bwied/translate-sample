@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HttpRequestUtility" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FactoryRegistry\FactoryRegistry.csproj" />
-    <ProjectReference Include="..\HttpRequestUtility\HttpRequestUtility.csproj" />
   </ItemGroup>
 
 </Project>
